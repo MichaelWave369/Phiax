@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070f1b">
+  <meta name="description" content="PHIAX: an original virtual spacecraft with a playful local shipmind, procedural sky, and interactive flight cockpit.">
+  <title>PHIAX // The Living Ship</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>Φ</span></div>
+        <div>
+          <div class="eyebrow">PROJECT PHIAX <span class="separator">/</span> VIRTUAL VESSEL 001</div>
+          <h1>PHIAX<span class="brand-dot">.</span></h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="online"><span class="online-dot"></span> SHIPMIND ONLINE</span>
+        <button class="icon-btn" id="sound-toggle" type="button" aria-pressed="false" title="Toggle synthesized sound">♪ <span class="btn-text">SOUND OFF</span></button>
+        <button class="icon-btn" id="voice-toggle" type="button" aria-pressed="false" title="Toggle spoken PHIAX replies">◖ <span class="btn-text">VOICE OFF</span></button>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <section class="stage-shell" aria-label="Interactive spaceship viewport">
+        <div class="viewport" id="viewport">
+          <canvas id="scene" aria-hidden="true"></canvas>
+          <div class="scene-vignette"></div>
+          <div class="viewport-top">
+            <div><span class="crosshair">✳</span> EXTERNAL VISUAL FEED <span class="dim">/ LIVE SIMULATION</span></div>
+            <span class="recording"><span></span> VISUAL LINK ACTIVE</span>
+          </div>
+          <div class="reticle" aria-hidden="true"><i></i><i></i><i></i><i></i><b>+</b></div>
+          <div class="ship-stage" id="ship-stage" aria-label="Animated original silver spacecraft">
+            <div class="ship-halo"></div>
+            <svg id="ship" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Silver streamlined PHIAX saucer with glowing teal propulsion ring">
+              <defs>
+                <linearGradient id="metal" x1="0" y1="0" x2=".22" y2="1">
+                  <stop offset="0" stop-color="#effdff"/><stop offset=".14" stop-color="#aecad5"/><stop offset=".37" stop-color="#5a7b91"/><stop offset=".53" stop-color="#d0e9f3"/><stop offset=".7" stop-color="#576d81"/><stop offset="1" stop-color="#111f36"/>
+                </linearGradient>
+                <linearGradient id="hullBottom" x1="0" y1="0" x2=".1" y2="1">
+                  <stop stop-color="#ecfcff"/><stop offset=".4" stop-color="#548196"/><stop offset=".76" stop-color="#1c334c"/><stop offset="1" stop-color="#060f20"/>
+                </linearGradient>
+                <linearGradient id="cockpit" x1="0" y1="0" x2=".08" y2="1">
+                  <stop stop-color="#c6faff"/><stop offset=".35" stop-color="#386789"/><stop offset=".72" stop-color="#10263e"/><stop offset="1" stop-color="#080e24"/>
+                </linearGradient>
+                <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                  <stop stop-color="#e5ffff"/><stop offset=".45" stop-color="#69fcdf"/><stop offset="1" stop-color="#0a756f"/>
+                </linearGradient>
+                <radialGradient id="engine"><stop stop-color="#c2fff8"/><stop offset=".24" stop-color="#67ffe7"/><stop offset=".7" stop-color="#18b9bf" stop-opacity=".8"/><stop offset="1" stop-color="#2ffff0" stop-opacity="0"/></radialGradient>
+                <filter id="glow"><feGaussianBlur stdDeviation="11"/></filter>
+              </defs>
+              <ellipse cx="450" cy="281" rx="315" ry="71" fill="#57ffe7" opacity=".38" filter="url(#glow)"/>
+              <ellipse cx="450" cy="302" rx="215" ry="53" fill="url(#engine)" class="engine-core"/>
+              <path d="M 70 236 Q 450 348 830 236 Q 720 319 450 342 Q 183 319 70 236" fill="url(#hullBottom)" stroke="#7fd7d9" stroke-opacity=".46" stroke-width="2"/>
+              <path d="M 64 232 Q 120 192 254 174 Q 320 134 450 130 Q 584 134 649 174 Q 778 194 837 233 Q 786 276 450 290 Q 113 276 64 232 Z" fill="url(#metal)" stroke="#e9fbff" stroke-opacity=".72" stroke-width="3"/>
+              <path d="M 256 174 Q 309 109 450 101 Q 592 109 644 174 Q 544 205 450 207 Q 356 205 256 174Z" fill="url(#cockpit)" stroke="#a5f2fd" stroke-width="2"/>
+              <path d="M 326 144 Q 451 98 576 146" stroke="#ebffff" stroke-width="5" stroke-linecap="round" fill="none" opacity=".58"/>
+              <path d="M 91 237 Q 450 320 806 238" fill="none" stroke="url(#edge)" stroke-width="8" opacity=".92"/>
+              <path d="M 135 250 Q 450 324 765 250" fill="none" stroke="#73dbeb" stroke-width="2" opacity=".45"/>
+              <path d="M 252 181 Q 450 233 649 181" stroke="#ddffff" stroke-width="2" opacity=".42" fill="none"/>
+              <ellipse cx="450" cy="253" rx="37" ry="7" fill="#b1fff7" opacity=".85"/>
+              <circle cx="450" cy="251" r="7" fill="#e8ffff"/>
+              <g fill="#a7fff4" opacity=".95"><ellipse cx="212" cy="252" rx="7" ry="3"/><ellipse cx="688" cy="252" rx="7" ry="3"/><ellipse cx="300" cy="273" rx="5" ry="3"/><ellipse cx="599" cy="273" rx="5" ry="3"/></g>
+            </svg>
+            <div class="ship-shadow"></div>
+          </div>
+          <div class="viewport-left-hud">
+            <div class="hud-line"><span>ENVIRONMENT</span><strong id="environment-text">SHASTA TWILIGHT</strong></div>
+            <div class="hud-line"><span>VESSEL CLASS</span><strong>PHI / ADAPTIVE</strong></div>
+          </div>
+          <div class="viewport-right-hud"><div>Φ / NAV SYSTEM</div><div id="nav-signal">MANUAL CONTROL</div></div>
+          <div class="viewport-bottom">
+            <div class="viewport-coordinate">SECTOR <span id="sector">SH-001</span> <span class="dim">/</span> <span id="scene-label">DUSK APPROACH</span></div>
+            <div class="live-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="telemetry" aria-label="Flight telemetry">
+          <div class="stat"><span>SPEED</span><strong><span id="speed">18</span> <small>KN</small></strong><div class="stat-foot">VELOCITY</div></div>
+          <div class="stat"><span>ALTITUDE</span><strong id="altitude">3,500 m</strong><div class="stat-foot">ABOVE DATUM</div></div>
+          <div class="stat"><span>HEADING</span><strong><span id="heading">294</span><small>°</small></strong><div class="stat-foot">TRUE VECTOR</div></div>
+          <div class="stat"><span>FLUX CORE</span><strong id="flux-status">STABLE</strong><div class="stat-foot"><span class="mini-dot"></span> SYSTEM NOMINAL</div></div>
+        </div>
+      </section>
+
+      <aside class="shipmind-panel" aria-labelledby="shipmind-heading">
+        <div class="panel-title"><div><span class="eyebrow">CONSCIOUSNESS INTERFACE / SIMULATED</span><h2 id="shipmind-heading">THE SHIPMIND</h2></div><span class="panel-version">CORE / 0.1</span></div>
+        <div class="ai-profile">
+          <div class="ai-orb" aria-hidden="true"><span class="orb-ring orb-ring-one"></span><span class="orb-ring orb-ring-two"></span><span class="orb-heart">Φ</span></div>
+          <div class="ai-name"><strong>PHIAX</strong><span>PERSONAL HOLOGRAPHIC INTELLIGENCE</span><small>MODE: <span id="ai-mode">PLAYFULLY ATTENTIVE</span></small></div>
+        </div>
+        <div class="chat-heading"><span>COMMUNICATION LOG</span><span id="message-count">001 TRANSMISSION</span></div>
+        <div class="transcript" id="transcript" aria-live="polite" aria-label="Conversation with PHIAX"></div>
+        <div class="suggestion-bar" aria-label="Suggested questions">
+          <button type="button" data-prompt="Who are you?">WHO ARE YOU?</button>
+          <button type="button" data-prompt="Tell me about the clouds">THE CLOUDS</button>
+          <button type="button" data-prompt="Take us to orbit">TAKE US TO ORBIT</button>
+        </div>
+        <form class="chat-form" id="chat-form">
+          <label for="chat-input" class="sr-only">Message PHIAX</label>
+          <input id="chat-input" name="message" type="text" maxlength="280" autocomplete="off" placeholder="Talk to your ship...">
+          <button class="mic-btn" id="mic-toggle" type="button" title="Speak to PHIAX (browser support required)" aria-label="Use microphone">◎</button>
+          <button class="send-btn" type="submit" aria-label="Send message">↗</button>
+        </form>
+        <p class="local-note">LOCAL SCRIPTED SHIPMIND <span>·</span> NO SERVER OR API KEY REQUIRED</p>
+      </aside>
+    </main>
+
+    <section class="control-deck" aria-label="Flight controls">
+      <div class="deck-panel navigation">
+        <div class="deck-heading"><span>01 <i></i> DESTINATION MATRIX</span><small>SELECT A COURSE</small></div>
+        <div class="destinations">
+          <button type="button" class="destination is-active" data-destination="shasta"><span class="dest-icon">△</span><span><strong>MOUNT SHASTA</strong><small>EARTH / TWILIGHT</small></span><span class="dest-end">01</span></button>
+          <button type="button" class="destination" data-destination="cloudline"><span class="dest-icon">≋</span><span><strong>LENTICULAR BELT</strong><small>SKY / WAVE FIELD</small></span><span class="dest-end">02</span></button>
+          <button type="button" class="destination" data-destination="orbit"><span class="dest-icon">✧</span><span><strong>AURORA GATE</strong><small>ORBIT / FICTIONAL</small></span><span class="dest-end">03</span></button>
+        </div>
+      </div>
+      <div class="deck-panel flight-controls">
+        <div class="deck-heading"><span>02 <i></i> FLIGHT CONTROL</span><small>MANUAL / AUTO</small></div>
+        <div class="throttle-meta"><span>ENGINE THROTTLE</span><strong id="throttle-label">18%</strong></div>
+        <input class="throttle-slider" id="throttle-slider" type="range" min="0" max="100" value="18" aria-label="Engine throttle">
+        <div class="throttle-scale"><span>0 / IDLE</span><span>50 / CRUISE</span><span>100 / MAX</span></div>
+        <div class="flight-buttons">
+          <button id="launch" type="button" class="primary-action">◇ LAUNCH</button>
+          <button id="autopilot" type="button" class="secondary-action" aria-pressed="false">◎ AUTOPILOT</button>
+          <button id="land" type="button" class="subtle-action">↓ LAND</button>
+        </div>
+      </div>
+      <div class="deck-panel vessel-systems">
+        <div class="deck-heading"><span>03 <i></i> VESSEL SYSTEMS</span><small>PHI ADAPTIVE HULL</small></div>
+        <div class="systems">
+          <button type="button" id="morph" class="system-button"><span class="system-glyph">⬡</span><span><strong>HULL MORPH</strong><small>ADAPTIVE GEOMETRY</small></span><span class="system-arrow">↗</span></button>
+          <button type="button" id="pulse" class="system-button"><span class="system-glyph">✳</span><span><strong>RESONANCE PULSE</strong><small>FIELD VISUALIZATION</small></span><span class="system-arrow">↗</span></button>
+        </div>
+        <div class="systems-foot"><span class="mini-dot"></span> ALL SYSTEMS SIMULATED <span>·</span> REAL PHYSICS NOT IMPLIED</div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>PHIAX V0.1 / A LIVING SHIP EXPERIMENT</span>
+      <div><kbd>W</kbd><kbd>S</kbd> THROTTLE <kbd>A</kbd><kbd>D</kbd> TURN <kbd>Q</kbd><kbd>E</kbd> ALTITUDE <kbd>SPACE</kbd> PULSE</div>
+      <a href="https://github.com/MichaelWave369/Phiax" rel="noopener noreferrer" target="_blank">SOURCE CODE ↗</a>
+    </footer>
+  </div>
+  <div class="pulse-overlay" id="pulse-overlay" aria-hidden="true"></div>
+  <script type="module" src="./src/app.mjs"></script>
+</body>
+</html>
