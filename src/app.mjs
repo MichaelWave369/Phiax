@@ -20,7 +20,6 @@ let messageCount = 0;
 let previousTime = 0;
 let nextTelemetry = 0;
 let pulseEnds = 0;
-let speakingTimer = 0;
 const keys = new Set();
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const stars = makeStars(180, 369);
@@ -441,7 +440,7 @@ else{
   });
 }
 window.addEventListener('keydown',event=>{
-  if(event.target.closest('input,textarea,button,[contenteditable]'))return;
+  if(event.target instanceof Element && event.target.closest('input,textarea,button,[contenteditable]'))return;
   const key=event.key.toLowerCase();
   if(key===' '){
     if(!event.repeat){pulse();}
